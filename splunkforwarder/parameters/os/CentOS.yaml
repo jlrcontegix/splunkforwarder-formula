@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set values specific to:
+#   salt['config.get']('os') == CentOS.
+#
+# You just need to add the key:values for this `os` that differ
+# from `defaults.yaml` + `<osarch>.yaml` + `<os_family>.yaml`.
+#
+# If you do not need to provide defaults via the `os` config,
+# you can remove this file or provide at least an empty dict, e.g.
+# values: {}
+---
+values:
+  pkg:
+    # If set to 'url' in defaults.yaml, define the .rpm UR
+    url: >-
+      'http://download.splunk.com/products/universalforwarder/releases/8.1.3/linux/splunkforwarder-8.1.3-63079c59e632-linux-2.6-x86_64.rpm'

@@ -1,0 +1,13 @@
+{%- for group, args in splunkforwarder.peernodes['groups'].items() %}
+[tcpout:{{ group }}]
+autoLBFrequency={{ args.autoLBFrequency }}
+server={{ args.server }}
+useACK={{ args.useACK }}
+{%- if args.ssl != 'false' -%}
+clientCert = {{ args.clientCert }}
+sslPassword =  {{ args.sslPassword }}
+{% endif %}
+{% endfor %}
+
+[tcpout]
+defaultGroup={{ splunkforwarder.peernodes['defaultgroup'] }}

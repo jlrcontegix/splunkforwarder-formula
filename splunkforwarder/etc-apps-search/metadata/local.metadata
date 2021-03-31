@@ -1,3 +1,0 @@
-[inputs/splunktcp%3A%2F%2F9998]
-owner = admin
-version = {{ pillar['splunkforwarder']['version'] }}

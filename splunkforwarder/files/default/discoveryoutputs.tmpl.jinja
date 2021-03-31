@@ -1,0 +1,18 @@
+{%- for group, args in splunkforwarder.indexer_discovery['groups'].items() %}
+[indexer_discovery:{{ args.name }}]
+pass4SymmKey ={{ args.pass4SymmKey }}
+master_uri = {{ args.master_uri }}
+
+[tcpout:{{ group }}]
+indexerDiscovery = {{ args.name }}
+autoLBFrequency = {{ args.autoLBFrequency }}
+forceTimebasedAutoLB = {{ args.forceTimebasedAutoLB }}
+useACK={{ args.useACK }}
+{%- if args.ssl != 'false' -%}
+clientCert = {{ args.clientCert }}
+sslPassword =  {{ args.sslPassword }}
+{% endif %}
+{%- endfor %}
+
+[tcpout]
+defaultGroup = {{ splunkforwarder.indexer_discovery['defaultgroup'] }}
