@@ -1,45 +1,39 @@
-# See README for more info about these settings
-
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
 splunkforwarder:
+  pkg:
+    # Package type can be 'url', 'pkg', or 'tar'
+    # If set to 'url' edit the Debian.yaml or RedHat.yaml file for download URL.
+    type: 'url'
 
-### --> begin mutually exclusive
-### EITHER: use your own custom package repository:
+    # If set to pkg above define the pkg name and version
+    name: splunkforwarder
+    version: 8.1.3
 
-  package:
-    name: your-custom-splunkforwarder-package
-    repo: your-custom-repo-name
-    version: optional-specific-version-number
+    # If set the 'tar' above define the tar download path here
+    tarurl: >-
+      'http://download.splunk.com/products/universalforwarder/releases/8.1.3/linux/splunkforwarder-8.1.3-63079c59e632-Linux-x86_64.tgz'
 
-### OR: download the package file directly and install it:
+  # Systemd or initd OS
+  boottype: 'initd'
 
-  version: 6.2.0
-  package_filename: splunkforwarder-6.2.0-237341-linux-2.6-amd64.deb
-  source_hash: sha256=8336952b317f9a9bdf7f47358d66b823948fabccbf46de6695d0d6560f5a4ee3
-  download_base_url: http://your.domain.com/downloads/
+  # SplunkForwarder directory ownership and runas user
+  user: splunk
+  group: splunk
 
-### <-- end mutually exclusive
+  # Configure a local user. Creates user and group defined above.
+  # This should not be needed as the splunkforwarder install now configures this.
+  createlocaluser: 'false'
+  # Groups user belongs to
+  additionalgroups:
+    - loggroup
 
-  cert_filename: selfsignedcert.pem
-  intermediate: True
-  forward_servers:
-    - 1.2.3.4:9998
-    - 1.2.4.5:9998
-  inputs:
-    monitor:
-      nginx-access-log:
-        monitor: /var/log/nginx/access.log
-        index: search
-        sourcetype: nginx_access_log
-      nginx-error-log:
-        monitor: /var/log/nginx/error.log
-        index: search
-        sourcetype: nginx_error_log
 
-splunk:
-  secret: your shared splunk secret
-  password:
-    outputs.conf: your (preferably encrypted) password
-    inputs.conf: your (preferably encrypted) password
+  # Configure Certs
+  configcerts: 'false'
   self_cert_filename: selfsignedcert.pem
   certs:
     cacert.pem:
