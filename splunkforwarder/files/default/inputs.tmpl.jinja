@@ -1,0 +1,10 @@
+{%- for group, args in splunkforwarder.inputs['monitor'].items() %}
+
+[monitor:://{{ args.monitor }}]
+{% for n, v in args.items()|sort -%}
+{% if n != 'monitor' -%}
+{{ n }} = {{ v }}
+{% endif %}
+{%- endfor %}
+
+{%- endfor %}

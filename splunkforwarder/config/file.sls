@@ -118,3 +118,22 @@ splunkforwarder-indexerdiscovery-file-file-managed:
     - context:
         splunkforwarder: {{ splunkforwarder | json }}
 {% endif %}
+
+{% if splunkforwarder.inputs['enabled'] == 'true' %}
+splunkforwarder-inputs-file-file-managed:
+  file.managed:
+    - name: /opt/splunkforwarder/etc/system/local/inputs.conf
+    - source: {{ files_switch(['inputs.tmpl.jinja'],
+                              lookup='splunkforwarder-inputs-file-file-managed'
+                 )
+              }}
+    - mode: 644
+    - user: {{ splunkforwarder.user }}
+    - group: {{ splunkforwarder.group }}
+    - makedirs: True
+    - template: jinja
+    - require:
+      - sls: {{ sls_package_install }}
+    - context:
+        splunkforwarder: {{ splunkforwarder | json }}
+{% endif %}

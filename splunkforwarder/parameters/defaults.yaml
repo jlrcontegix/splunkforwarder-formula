@@ -93,3 +93,16 @@ values:
   deploymentserver:
     enabled: 'false'
     deployment: 'deploymentserver.splunk.mycompany.com:8089'
+
+  # Inputs Monitoring
+  inputs:
+    enabled: 'false'
+    monitor:
+      nginx-access-log:
+        monitor: /var/log/nginx/access.log
+        index: search
+        sourcetype: nginx_access_log
+      nginx-error-log:
+        monitor: /var/log/nginx/error.log
+        index: search
+        sourcetype: nginx_error_log
