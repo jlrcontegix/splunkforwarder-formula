@@ -24,7 +24,7 @@ values:
   user: splunk
   group: splunk
 
-  # Set Splunk Admin Password. You should generate a new hash 
+  # Set Splunk Admin Password. You should generate a new hash
   # and set this to secure your forwarders.
   adminpass:
     enabled: 'false'
