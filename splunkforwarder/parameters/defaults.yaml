@@ -24,6 +24,13 @@ values:
   user: splunk
   group: splunk
 
+  # Set Splunk Admin Password. You should generate a new hash 
+  # and set this to secure your forwarders.
+  adminpass:
+    enabled: 'false'
+    user: admin
+    hashpass: '$6$hf3syG/qxy6REoBp'
+
   # Configure a local user. Creates user and group defined above.
   # This should not be needed as the splunkforwarder install now configures this.
   createlocaluser: 'false'

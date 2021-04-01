@@ -62,7 +62,26 @@ splunkforwarder-configure-systemd:
       - sls: {{ sls_package_install }}
 {% endif %}
 
-{% if splunkforwarder.deploymentserver['enabled'] == 'true' %}
+{% if splunkforwarder.adminpass['enabled'] != 'false' %}
+splunkforwarder-adminpass-file-file-managed:
+  file.managed:
+    - name: /opt/splunkforwarder/etc/system/local/user-seed.conf
+    - source: {{ files_switch(['userseed.tmpl.jinja'],
+                              lookup='splunkforwarder-adminpass-file-file-managed'
+                 )
+              }}
+    - mode: 644
+    - user: {{ splunkforwarder.user }}
+    - group: {{ splunkforwarder.group }}
+    - makedirs: True
+    - template: jinja
+    - require:
+      - sls: {{ sls_package_install }}
+    - context:
+        splunkforwarder: {{ splunkforwarder | json }}
+{% endif %}
+
+{% if splunkforwarder.deploymentserver['enabled'] != 'false' %}
 splunkforwarder-deploymentclient-file-file-managed:
   file.managed:
     - name: /opt/splunkforwarder/etc/system/local/deploymentclient.conf
@@ -81,7 +100,7 @@ splunkforwarder-deploymentclient-file-file-managed:
         splunkforwarder: {{ splunkforwarder | json }}
 {% endif %}
 
-{% if splunkforwarder.peernodes['enabled'] == 'true' %}
+{% if splunkforwarder.peernodes['enabled'] != 'false' %}
 splunkforwarder-peers-file-file-managed:
   file.managed:
     - name: /opt/splunkforwarder/etc/system/local/outputs.conf
@@ -100,7 +119,7 @@ splunkforwarder-peers-file-file-managed:
         splunkforwarder: {{ splunkforwarder | json }}
 {% endif %}
 
-{% if splunkforwarder.indexer_discovery['enabled'] == 'true' %}
+{% if splunkforwarder.indexer_discovery['enabled'] != 'false' %}
 splunkforwarder-indexerdiscovery-file-file-managed:
   file.managed:
     - name: /opt/splunkforwarder/etc/system/local/outputs.conf
@@ -119,7 +138,7 @@ splunkforwarder-indexerdiscovery-file-file-managed:
         splunkforwarder: {{ splunkforwarder | json }}
 {% endif %}
 
-{% if splunkforwarder.inputs['enabled'] == 'true' %}
+{% if splunkforwarder.inputs['enabled'] != 'false' %}
 splunkforwarder-inputs-file-file-managed:
   file.managed:
     - name: /opt/splunkforwarder/etc/system/local/inputs.conf
