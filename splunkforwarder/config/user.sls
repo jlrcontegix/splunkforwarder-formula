@@ -14,6 +14,6 @@ splunkforwarder_user:
     - usergroup: {{ splunkforwarder.group }}
     - groups:
       - {{ splunkforwarder.group }}
-      {% for group in {{ splunkforwarder.additionalgroups }} -%}
+      {% for group in splunkforwarder.additionalgroups -%}
       - {{ group }}
       {%- endfor %}
