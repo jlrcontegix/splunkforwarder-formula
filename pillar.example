@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
-#
-# Set default values.
 ---
-splunkforwarder:
+values:
   pkg:
     # Package type can be 'url', 'pkg', or 'tar'
     # If set to 'url' edit the Debian.yaml or RedHat.yaml file for download URL.
@@ -24,6 +22,13 @@ splunkforwarder:
   user: splunk
   group: splunk
 
+  # Set Splunk Admin Password. You should generate a new hash
+  # and set this to secure your forwarders.
+  adminpass:
+    enabled: 'false'
+    user: admin
+    hashpass: '$6$hf3syG/qxy6REoBp'
+
   # Configure a local user. Creates user and group defined above.
   # This should not be needed as the splunkforwarder install now configures this.
   createlocaluser: 'false'
@@ -40,3 +45,69 @@ splunkforwarder:
       content: put your cert content here
     selfsignedcert.pem:
       content: put your cert content here
+
+  # Set one of the options below to "true" to configure forwarding
+  # Configure the forwarders to send data to the peer nodes
+  peernodes:
+    enabled: 'false'
+    defaultgroup: 'group1'
+    groups:
+      group1:
+        server: '10.10.10.1:9997,10.10.10.2:9997,10.10.10.3:9997'
+        useACK: 'false'
+        autoLBFrequency: 40
+        ssl: 'false'
+        clientCert: '<path to  client certificate>'
+        sslPassword: '<CAcert password>'
+      group2:
+        server: '10.10.10.1:9997,10.10.10.2:9997,10.10.10.3:9997'
+        useACK: 'false'
+        autoLBFrequency: 40
+        ssl: 'false'
+        clientCert: '<path to  client certificate>'
+        sslPassword: '<CAcert password>'
+
+  # Configure indexer discovery
+  indexer_discovery:
+    enabled: 'false'
+    defaultgroup: 'myindexerdiscovery2'
+    groups:
+      group1:
+        name: 'myindexerdiscovery'
+        master_uri: 'master.splunk.mycompany.com:8089'
+        pass4SymmKey: 'changeme'
+        useACK: 'false'
+        autoLBFrequency: 40
+        forceTimebasedAutoLB: 'true'
+        ssl: 'false'
+        clientCert: '<path to  client certificate>'
+        sslPassword: '<CAcert password>'
+
+      group2:
+        name: 'myindexerdiscovery2'
+        master_uri: 'master2.splunk.mycompany.com:8089'
+        pass4SymmKey: 'changeme'
+        useACK: 'false'
+        autoLBFrequency: 40
+        forceTimebasedAutoLB: 'true'
+        ssl: 'false'
+        clientCert: '<path to  client certificate>'
+        sslPassword: '<CAcert password>'
+
+  # Splunk Deployment Server. Configures deploymentclient.conf
+  deploymentserver:
+    enabled: 'false'
+    deployment: 'deploymentserver.splunk.mycompany.com:8089'
+
+  # Inputs Monitoring
+  inputs:
+    enabled: 'false'
+    monitor:
+      nginx-access-log:
+        monitor: /var/log/nginx/access.log
+        index: search
+        sourcetype: nginx_access_log
+      nginx-error-log:
+        monitor: /var/log/nginx/error.log
+        index: search
+        sourcetype: nginx_error_log
