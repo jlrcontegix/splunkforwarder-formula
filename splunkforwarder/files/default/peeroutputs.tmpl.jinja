@@ -6,7 +6,7 @@ useACK={{ args.useACK }}
 {%- if args.ssl != 'false' %}
 clientCert = {{ args.clientCert }}
 sslPassword =  {{ args.sslPassword }}
-{% endif %}
+{% endif -%}
 {% endfor %}
 
 [tcpout]
