@@ -30,7 +30,8 @@ splunkforwarder-tar-installed:
     - name: {{ splunkforwarder.group }}
   user.present:
     - name: {{ splunkforwarder.user }}
-{% else -%}
+    - optional_groups: {{ splunkforwarder.group }}
+{% else %}
   user.present:
     - name: {{ splunkforwarder.user }}
     - usergroup: True
