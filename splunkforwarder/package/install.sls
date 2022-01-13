@@ -10,6 +10,8 @@ splunkforwarder-rpmurlpackage-install-pkg-installed:
   pkg.installed:
     - sources:
       - splunkforwarder: {{ splunkforwarder.pkg.url }}
+    - unless:
+      - "/opt/splunkforwarder/bin/splunk --version | grep {{ splunkforwarder.pkg.version }}"
 {% endif %}
 
 {% if splunkforwarder.pkg['type'] == 'pkg' %}
@@ -17,6 +19,8 @@ splunkforwarder-package-install-pkg-installed:
   pkg.installed:
     - name: {{ splunkforwarder.pkg.name }}
     - version: {{ splunkforwarder.pkg.version }}
+    - unless:
+      - "/opt/splunkforwarder/bin/splunk --version | grep {{ splunkforwarder.pkg.version }}"
 {% endif %}
 
 {% if splunkforwarder.pkg['type'] == 'tar' %}
@@ -43,6 +47,8 @@ splunkforwarder-tar-installed:
     - user: {{ splunkforwarder.user }}
     - group: {{ splunkforwarder.group }}
     - skip_verify: True
+    - unless:
+      - "/opt/splunkforwarder/bin/splunk --version | grep {{ splunkforwarder.pkg.version }}"
     - require:
       - pkg: splunkforwarder-tar-dependency
 {% endif %}
