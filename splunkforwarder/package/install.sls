@@ -25,6 +25,17 @@ splunkforwarder-tar-dependency:
     - name: tar
 
 splunkforwarder-tar-installed:
+{% if splunkforwarder.group != splunkforwarder.user %}
+  group.present:
+    - name: {{ splunkforwarder.group }}
+  user.present:
+    - name: {{ splunkforwarder.user }}
+{% else -%}
+  user.present:
+    - name: {{ splunkforwarder.user }}
+    - usergroup: True
+{% endif %}
+
   archive.extracted:
     - name: /opt
     - source: {{ splunkforwarder.pkg.tarurl }}
