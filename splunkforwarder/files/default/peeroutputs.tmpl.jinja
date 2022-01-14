@@ -3,10 +3,10 @@
 autoLBFrequency={{ args.autoLBFrequency }}
 server={{ args.server }}
 useACK={{ args.useACK }}
-{%- if args.ssl != 'false' -%}
+{%- if args.ssl != 'false' %}
 clientCert = {{ args.clientCert }}
 sslPassword =  {{ args.sslPassword }}
-{% endif %}
+{% endif -%}
 {% endfor %}
 
 [tcpout]
