@@ -21,6 +21,9 @@ splunkforwarder-initd-running-service-running:
   service.running:
     - name: splunk
     - enable: True
+{% if salt['grains.get']('init') != 'service'%}
+    - provider: service
+{% endif %}
     - watch:
       - sls: {{ sls_config_file }}
 {% endif %}
