@@ -31,7 +31,9 @@ splunkforwarder-initd-permissions:
 splunkforwarder-configure-initd:
   cmd.run:
     - name: /opt/splunkforwarder/bin/splunk enable boot-start -user {{ splunkforwarder.user }} --accept-license --answer-yes --no-prompt
-    - onlyif: test -z "$(ls -A /etc/rc.d/init.d/splunk)"
+    - onlyif: 
+      - test -z "$(ls -A /etc/rc.d/init.d/splunk)"
+      - test -n "$(ls -A /opt/splunkforwarder/ftr)"
     - require:
       - sls: {{ sls_package_install }}
 {% endif %}
@@ -57,7 +59,9 @@ splunkforwarder-systemd-permissions:
 splunkforwarder-configure-systemd:
   cmd.run:
     - name: /opt/splunkforwarder/bin/splunk enable boot-start -user {{ splunkforwarder.user }} -systemd-managed 1 --accept-license --answer-yes --no-prompt
-    - onlyif: test -z "$(ls -A /etc/systemd/system/SplunkForwarder.service)"
+    - onlyif: 
+      - test -z "$(ls -A /etc/systemd/system/SplunkForwarder.service)"
+      - test -n "$(ls -A /opt/splunkforwarder/ftr)"
     - require:
       - sls: {{ sls_package_install }}
 {% endif %}
